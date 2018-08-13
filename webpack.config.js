@@ -1,4 +1,5 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -17,16 +18,22 @@ module.exports = {
           },
           {
             test: /\.js$/,
-            loader: 'babel-loader?presets=es2015',
+            exclude: /node_modules/,
+            use: ['babel-loader'],
           },
           {
             test: /\.css$/,
-            loader: 'css-loader',
-          },
+            use: [
+              'style-loader',
+              'css-loader'
+            ]
+          }
         ],
       },
       plugins: [
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new HardSourceWebpackPlugin()
+        //cache data from: node_modules/.cache/hard-sourc
       ],
       resolve: {
         extensions: ['.js', '.vue'],
